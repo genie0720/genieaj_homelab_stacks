@@ -1,0 +1,21 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      # GID: "${GID-1000}"
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/caddy crowdsecurity/appsec-generic-rules crowdsecurity/appsec-virtual-patching"
+    volumes:
+      - ./config/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - ./crowdsec-db:/var/lib/crowdsec/data/
+      - ./config:/etc/crowdsec/
+      - ../caddy/logs/:/var/log/caddy/:ro
+      #- /var/log/auth.log:/var/log/auth.log
+      #- ../vault/log:/var/log/vault/:ro
+    networks:
+      - traefik-public
+    restart: unless-stopped
+
+networks:
+  caddy-public:
+    external: true
