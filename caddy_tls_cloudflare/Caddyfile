@@ -1,0 +1,70 @@
+{
+        admin off
+        servers {
+                client_ip_headers X-Forwarded-For
+                trusted_proxies static private_ranges
+                trusted_proxies_strict
+        }
+
+
+}
+
+(default-headers) {
+        header {
+                -frameDeny
+                -sslRedirect
+                -browserXssFilter
+                -contentTypeNosniff
+                -forceSTSHeader
+                -stsIncludeSubdomains
+                -stsPreload
+                -stsSeconds 15552000
+                -customFrameOptionsValue SAMEORIGIN
+                -customRequestHeaders X-Forwarded-Proto https
+        }
+}
+
+(geniehome-ipwhitelist) {
+        @blocked_ips not remote_ip 172.26.0.1/24 192.168.20.0/24 192.168.1.0/27 192.168.3.1 192.168.3.2 192.168.30.0/28 10.0.0.0/8
+
+        handle @blocked_ips {
+                respond "Forbidden, You Idiot"
+        }
+}
+
+*.geniehome.net {
+        tls {
+                dns cloudflare {env.CF_API_TOKEN}
+                propagation_delay 2m
+                resolvers 1.1.1.1
+        }
+        log {
+                level INFO
+                output file /var/log/caddy/access.log
+        }
+
+        @app-external host app.geniehome.net
+        handle @app-external {
+                reverse_proxy app {
+                        trusted_proxies 0.0.0.0/0
+                }
+        }
+
+}
+*.test.geniehome.net {
+        import default-headers
+        import geniehome-ipwhitelist
+        tls {
+                dns cloudflare {env.CF_API_TOKEN}
+                propagation_delay 2m
+                resolvers 1.1.1.1
+        }
+        log {
+                level INFO
+                output file /var/log/caddy/access.log
+        }
+        @app host app.local.geniehome.net
+        handle @app {
+                reverse_proxy http://app
+        }
+}
