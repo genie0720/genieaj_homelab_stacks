@@ -13,9 +13,9 @@ services:
       #- /var/log/auth.log:/var/log/auth.log
       #- ../vault/log:/var/log/vault/:ro
     networks:
-      - traefik-public
+      - caddy
     restart: unless-stopped
 
 networks:
-  caddy-public:
+  caddy:
     external: true
