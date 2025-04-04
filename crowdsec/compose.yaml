@@ -10,8 +10,6 @@ services:
       - ./crowdsec-db:/var/lib/crowdsec/data/
       - ./config:/etc/crowdsec/
       - ../caddy/logs/:/var/log/caddy/:ro
-      #- /var/log/auth.log:/var/log/auth.log
-      #- ../vault/log:/var/log/vault/:ro
     networks:
       - caddy
     restart: unless-stopped
