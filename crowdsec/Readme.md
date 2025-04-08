@@ -32,3 +32,9 @@ Ensure that access to Caddy logs is included:
 Run the following command:
 ```bash
 sudo docker compose up -d
+```
+### Checking container logs
+Run the following command:
+```bash
+sudo docker logs crowdsec
+```
