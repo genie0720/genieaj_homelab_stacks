@@ -1,4 +1,4 @@
-# CrowdSec Docker Compose
+# Crowdsec Caddy Configuration
 
 ## **CrowdSec Docker Compose Setup**
 
