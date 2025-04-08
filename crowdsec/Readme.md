@@ -38,3 +38,53 @@ Run the following command:
 ```bash
 sudo docker logs crowdsec
 ```
+
+## **Getting the CrowdSec Bouncer Key for Caddy**
+
+Next, run the 'cscli' (CrowdSec CLI) command inside the CrowdSec container:
+```bash
+sudo docker exec -it crowdsec cscli
+```
+### Convenience Tip: Adding an Alias
+For ease of use, you can add an alias for `cscli` in your `.bashrc` file:
+```
+alias cscli="docker exec -it crowdsec cscli"
+```
+Save the file and reload the alias with:
+```bash
+source ~/.bashrc
+```
+Alternatively, restart the terminal.
+
+Run the following command to generate a bouncer key for Caddy:
+```bash
+cscli bouncers add caddy
+```
+
+## **Updating the Caddyfile**
+
+Within your Caddyfile, add the following configuration under the global configuration section:
+```
+order crowdsec before respond
+```
+- Ensures that the CrowdSec module processes requests and can block malicious requests before any responses are sent.
+
+## **CrowdSec Block Configuration**
+
+### Adding CrowdSec to Your App
+At the bottom of the Caddyfile, add CrowdSec to the app being tested (e.g., PhotoPrism).
+- **URL**: Specifies where the CrowdSec API is accessible.
+- **API Key**: Used to authenticate with the CrowdSec API.
+- **Ticker Interval**: Defines how frequently the CrowdSec middleware checks for updates (e.g., every 3 seconds).
+- **APPsec Module**: Handles advanced security and application-level protections.
+
+### Adding CrowdSec to Your App
+At the bottom of the Caddyfile, add CrowdSec to the app being tested (e.g., PhotoPrism).
+
+## Restart Caddy Container
+Save the changes to the Caddyfile and restart the Caddy container with the following command:
+```bash
+docker compose up -d --force-recreate
+```
+
+
