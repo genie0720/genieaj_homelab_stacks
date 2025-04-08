@@ -5,7 +5,15 @@
                 trusted_proxies static private_ranges
                 trusted_proxies_strict
         }
-
+        order crowdsec before respond
+        crowdsec {
+                api_url http://crowdsec:8080
+                api_key "T/AZ7StIc0c+WHiD4LS3zuC6t5lRt80KkH8e6jymiJA"
+                ticker_interval 3s
+                appsec_url http://crowdsec:7422
+                #disable_streaming
+                #enable_hard_fails
+        }
 
 }
 
@@ -25,7 +33,7 @@
 }
 
 (geniehome-ipwhitelist) {
-        @blocked_ips not remote_ip 172.26.0.1/24 192.168.20.0/24 192.168.1.0/27 192.168.3.1 192.168.3.2 192.168.30.0/28 10.0.0.0/8
+        @blocked_ips not remote_ip 100.100.54.99 172.26.0.1/24 192.168.20.0/24 192.168.1.0/27 192.168.3.1 192.168.3.2 192.168.30.0/28 10.0.0.0/8
 
         handle @blocked_ips {
                 respond "Forbidden, You Idiot"
@@ -43,14 +51,19 @@
                 output file /var/log/caddy/access.log
         }
 
-        @app-external host app.geniehome.net
-        handle @app-external {
-                reverse_proxy app {
-                        trusted_proxies 0.0.0.0/0
-                }
-        }
+        @photoprism-external host prism.geniehome.net
+        handle @photoprism-external {
+                reverse_proxy photoprism:2342 {
 
+
+
+        }
+        crowdsec
+        header @photoprism-external X-Forwarded-For "{http.request.header.Cf-Connecting-Ip}"
+
+        }
 }
+
 *.test.geniehome.net {
         import default-headers
         import geniehome-ipwhitelist
@@ -63,8 +76,9 @@
                 level INFO
                 output file /var/log/caddy/access.log
         }
-        @app host app.local.geniehome.net
-        handle @app {
-                reverse_proxy http://app
+        @photoprism host photo.test.geniehome.net
+        handle @photoprism {
+                reverse_proxy photoprism:2342
+                crowdsec
         }
 }
