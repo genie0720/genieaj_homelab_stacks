@@ -1,6 +1,6 @@
 services:
   ntfy:
-    image: binwiederhier/ntfy
+    image: binwiederhier/ntfy:latest
     hostname: ntfy
     container_name: ntfy
     networks:
