@@ -1,3 +1,4 @@
 auth-file: "/etc/ntfy/auth.db"
 auth-default-access: "deny-all"
 base-url: "https://ntfy.subdomain.domain"
+upstream-base-url: "https://ntfy.sh" #for ios instant notifications
