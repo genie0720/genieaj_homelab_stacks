@@ -1,0 +1,21 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    hostname: ntfy
+    container_name: ntfy
+    networks:
+      - caddy
+    command:
+      - serve
+    environment:
+      - TZ=America/New_York # optional: Change to your desired timezone
+    #user: UID:GID # optional: Set custom user/group or uid/gid
+    volumes:
+      - ./cache/ntfy:/var/cache/ntfy
+      - ./etc/ntfy:/etc/ntfy
+    # ports:
+    # - 8443:80
+    restart: unless-stopped
+networks:
+  caddy:
+    external: true
