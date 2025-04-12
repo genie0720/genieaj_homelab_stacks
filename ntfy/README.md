@@ -77,14 +77,14 @@ The value of the auth parameter is the value of the authorization header, bearer
 Run the following command on linux distros to get auth parameter:
 
 ```
-echo -n "Bearer tk_aqr0hi692y16wlmgt4iyca5xcet6a" | base64 | tr -d '='
+echo -n "Bearer {token}" | base64 | tr -d '='
 ```
 
 
 Powershell command:
 
 ```
-[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("Bearer tk_aqr0hi692y16wlmgt4iyca5xcet6a")) -replace "="
+[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("Bearer {token}")) -replace "="
 ```
 
 Curl command with auth parameter:
