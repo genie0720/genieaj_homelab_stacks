@@ -62,7 +62,7 @@ services:
       - AUTHENTIK_POSTGRESQL__USER=postgres
       - AUTHENTIK_POSTGRESQL__NAME=postgres
       - AUTHENTIK_POSTGRESQL__PASSWORD=postgres
-      - AUTHENTIK_SECRET_KEY=oP+Q/uXkef6jDALVFLHErDfbrbIqlcVQzxDh2EoVUKJpLQk/kpEfM4lIWKphO1DI
+      - AUTHENTIK_SECRET_KEY={secret_key}
     # `user: root` and the docker socket volume are optional.
     # See more for the docker socket integration here:
     # https://goauthentik.io/docs/outposts/integrations/docker
