@@ -16,7 +16,15 @@
         }
 
 }
-
+(authentik) {
+      forward_auth http://authentik:9000 {
+        uri /outpost.goauthentik.io/auth/caddy
+        copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Entitlements X-Authentik-Email X-Authentik-Name X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-Jwks X-Authentik-Meta-Outpost X-Authentik-Meta-Provider X-Authentik-Meta-App X-Authentik-Meta-Version
+    }
+    reverse_proxy /outpost.goauthentik.io/* http://authentik:9000 {
+        header_up Host {http.reverse_proxy.upstream.hostport}
+    }
+    }
 (default-headers) {
         header {
                 -frameDeny
@@ -79,6 +87,12 @@
         @photoprism host photo.test.geniehome.net
         handle @photoprism {
                 reverse_proxy photoprism:2342
+                import authentik
+                crowdsec
+        }
+       @authentik host authentik.local.geniehome.net
+        handle @authentik {
+                reverse_proxy authentik:9000
                 crowdsec
         }
 }
