@@ -99,3 +99,5 @@ networks:
     external: true
   authentik:
     external: true
+  ntfy:
+    external: true
