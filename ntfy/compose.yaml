@@ -4,6 +4,7 @@ services:
     container_name: ntfy
     networks:
       - caddy
+      - ntfy
     command:
       - serve
     environment:
@@ -17,4 +18,6 @@ services:
     restart: unless-stopped
 networks:
   caddy:
+    external: true
+  ntfy:
     external: true
