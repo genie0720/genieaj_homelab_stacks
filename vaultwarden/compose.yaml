@@ -1,0 +1,25 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    hostname: vaultwarden
+    container_name: vaultwarden
+    # network_mode: host
+    #ports:
+    # - 8080:80
+    networks:
+      - caddy
+    env_file:
+      - .env
+    environment:
+      DOMAIN: https://vault.test.geniehome.net
+      LOG_FILE: /data/log/vaultwarden.log
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+     # SIGNUPS_ALLOWED: "false"
+      IP_HEADER: "CF-Connecting-IP" #for use with cloudflare tunnels
+      EXPERIMENTAL_CLIENT_FEATURE_FLAGS: "ssh-key-vault-item,ssh-agent"
+    volumes:
+      - ./log:/data/log
+      - ./vw-data:/data
+networks:
+  caddy:
+    external: true
