@@ -1,0 +1,32 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    networks:
+      - npm
+    # ports: # uncomment if not using reverse proxy
+    #   - 8096:8096 # uncomment if not using reverse proxy
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - type: bind
+        source: /media/movies
+        target: /movies
+      - type: bind
+        source: /media/pictures
+        target: /pictures
+      # Optional - extra fonts to be used during transcoding with subtitle burn-in
+      # - type: bind
+      #   source: /path/to/fonts
+      #   target: /usr/local/share/fonts/custom
+      #   read_only: true
+    restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.subdomain.domain.net
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    # extra_hosts:
+    #   - 'host.docker.internal:host-gateway'
+networks:
+  npm:
+    external: true
