@@ -1,0 +1,110 @@
+http:
+  routers:
+    traefik:
+      entryPoints:
+        - "http"
+      rule: "Host(`dashboard.traefik.geniehome.net`)"
+      middlewares:
+        - primary
+      service: api@internal
+    traefik-secure:
+      entryPoints:
+        - "https"
+      rule: "Host(`dashboard.traefik.geniehome.net`)"
+      middlewares:
+        - primary
+      tls:
+        certResolver:
+          - cloudflare
+        domains:
+          main: 
+            - local.geniehome.net
+          sans:
+            - "*.local.geniehome.net"
+      service: api@internal
+
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.traefik.geniehome.net`)"
+      middlewares:
+        - primary
+        - crowdsec
+      tls: {}
+      service: jellyfin
+      #--------------------------------------------services---------------------------------------#
+  services:
+
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://jellyfin:8096"
+        passHostHeader: true
+
+#----------------------------------------- MIDDLEWARES ------------------------------------------------------------#
+  middlewares:
+
+    authentik:
+      forwardAuth:
+        address: "http://authentik:9000/outpost.goauthentik.io/auth/traefik"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+
+    geniehome-ipwhitelist:
+      ipAllowList:
+        sourceRange:
+          - "192.168.20.0/25"
+          - "192.168.1.0/27"
+          - "192.168.3.1"
+          - "192.168.3.2"
+          - "192.168.30.0/28"
+          - "10.0.0.0/8"
+
+    https-redirect:
+      redirectScheme:
+        scheme: https
+
+    # pihole-addprefix:
+    #   addPrefix:
+    #     prefix: /admin
+    # pihole-redirectregex:
+    #   redirectRegex:
+    #     regex: /admin/$
+    #     replacement: /
+
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    crowdsec:
+      forwardauth:
+        address: http://bouncer-traefik:8080/api/v1/forwardAuth
+        trustForwardHeader: true
+
+    primary:
+      chain:
+        middlewares:
+        - default-headers
+        - https-redirect
+        - geniehome-ipwhitelist
