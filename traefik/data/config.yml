@@ -1,12 +1,5 @@
 http:
   routers:
-    traefik:
-      entryPoints:
-        - "http"
-      rule: "Host(`dashboard.traefik.geniehome.net`)"
-      middlewares:
-        - primary
-      service: api@internal
     traefik-secure:
       entryPoints:
         - "https"
@@ -14,31 +7,42 @@ http:
       middlewares:
         - primary
       tls:
-        certResolver:
-          - cloudflare
+        certResolver: "cloudflare"
         domains:
-          main: 
-            - traefik.geniehome.net
-          sans:
-            - "*.traefik.geniehome.net"
+          - main: "traefik.geniehome.net"
+            sans: "*.traefik.geniehome.net"
       service: api@internal
-
-    jellyfin:
+      
+    vaultwarden:
       entryPoints:
         - "https"
-      rule: "Host(`jellyfin.traefik.geniehome.net`)"
+      rule: "Host(`vault.traefik.geniehome.net`)"
       middlewares:
         - primary
-        - crowdsec
       tls: {}
-      service: jellyfin
+      service: vaultwarden
+      
+    photoprism:
+      entryPoints:
+        - "https"
+      rule: "Host(`photoprism.traefik.geniehome.net`)"
+      middlewares:
+        - primary
+      tls: {}
+      service: photoprism
       #--------------------------------------------services---------------------------------------#
   services:
 
-    jellyfin:
+    vaultwarden:
       loadBalancer:
         servers:
-          - url: "http://jellyfin:8096"
+          - url: "http://vaultwarden"
+        passHostHeader: true
+        
+    photoprism:
+      loadBalancer:
+        servers:
+          - url: "http://photoprism:2342"
         passHostHeader: true
 
 #----------------------------------------- MIDDLEWARES ------------------------------------------------------------#
@@ -64,12 +68,8 @@ http:
     geniehome-ipwhitelist:
       ipAllowList:
         sourceRange:
-          - "192.168.20.0/25"
-          - "192.168.1.0/27"
-          - "192.168.3.1"
-          - "192.168.3.2"
-          - "192.168.30.0/28"
-          - "10.0.0.0/8"
+          - "100.76.38.100"
+          - "192.168.8.0/27"
 
     https-redirect:
       redirectScheme:
@@ -107,4 +107,4 @@ http:
         middlewares:
         - default-headers
         - https-redirect
-        - geniehome-ipwhitelist
+      #  - geniehome-ipwhitelist
