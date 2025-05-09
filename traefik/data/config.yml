@@ -18,9 +18,9 @@ http:
           - cloudflare
         domains:
           main: 
-            - local.geniehome.net
+            - traefik.geniehome.net
           sans:
-            - "*.local.geniehome.net"
+            - "*.traefik.geniehome.net"
       service: api@internal
 
     jellyfin:
