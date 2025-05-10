@@ -3,20 +3,20 @@ http:
     traefik-secure:
       entryPoints:
         - "https"
-      rule: "Host(`dashboard.traefik.geniehome.net`)"
+      rule: "Host(`dashboard.traefik.subdomain.net`)"
       middlewares:
         - primary
       tls:
         certResolver: "cloudflare"
         domains:
-          - main: "traefik.geniehome.net"
-            sans: "*.traefik.geniehome.net"
+          - main: "traefik.subdomain.net"
+            sans: "*.traefik.subdomain.net"
       service: api@internal
       
     vaultwarden:
       entryPoints:
         - "https"
-      rule: "Host(`vault.traefik.geniehome.net`)"
+      rule: "Host(`vault.traefik.subdomain.net`)"
       middlewares:
         - primary
       tls: {}
@@ -25,7 +25,7 @@ http:
     photoprism:
       entryPoints:
         - "https"
-      rule: "Host(`photoprism.traefik.geniehome.net`)"
+      rule: "Host(`photoprism.traefik.subdomain.net`)"
       middlewares:
         - primary
       tls: {}
