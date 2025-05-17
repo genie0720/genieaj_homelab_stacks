@@ -1,0 +1,21 @@
+services:
+  dockflare:
+    image: alplat/dockflare:stable
+    container_name: dockflare
+    restart: unless-stopped
+   # ports:
+    #  - "5000:5000"  # Web UI port
+    env_file:
+      - .env  # Load environment variables from .env file
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Required to monitor Docker events
+      - ./data:/app/data  # Persistent storage for state
+    networks:
+     #- cloudflared  # Network for communication with cloudflared agent. Uncomment if using an external cloudflare tunnel agent.
+      - traefik 
+
+networks:
+  #cloudflared:
+    #external: true
+  traefik:
+    external: true
