@@ -74,10 +74,10 @@ services:
       cloudflare.tunnel.enable: "true"
 
        # The public hostname to expose (must be a valid domain you control)
-      cloudflare.tunnel.hostname: "vaultwarden.geniehome.net"
+      cloudflare.tunnel.hostname: "vaultwarden.subdomain.net"
 
        # The internal service address (protocol://host:port)
-      cloudflare.tunnel.service: "https://vault.traefik.geniehome.net"
+      cloudflare.tunnel.service: "https://vault.internal.subdomain.net"
     container_name: vaultwarden
     # network_mode: host
     #ports:
@@ -87,7 +87,7 @@ services:
     env_file:
       - .env
     environment:
-      DOMAIN: https://vault.traefik.geniehome.net
+      DOMAIN: https://vault.internal.subdomain.net
       LOG_FILE: /data/log/vaultwarden.log
       ADMIN_TOKEN: ${ADMIN_TOKEN}
      # SIGNUPS_ALLOWED: "false"
@@ -104,6 +104,6 @@ networks:
 
 cloudflare.tunnel.enable will be set to true to enable dockflare management
 
-cloudflare.tunnel.hostname will be the host we configured in traefik's config.yml file to be used publicly. so it was vaultwarden.geniehome.net
+cloudflare.tunnel.hostname will be the host we configured in traefik's config.yml file to be used publicly. so it was vaultwarden.subdomain.net
 
-and the last label is cloudflare.tunnel.service, which will be the internal host that was configured in traefik's config.yml file. vault.traefik.geniehome.net
+and the last label is cloudflare.tunnel.service, which will be the internal host that was configured in traefik's config.yml file. vault.internal.subdomain.net
