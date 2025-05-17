@@ -3,20 +3,29 @@ http:
     traefik-secure:
       entryPoints:
         - "https"
-      rule: "Host(`dashboard.traefik.subdomain.net`)"
+      rule: "Host(`dashboard.internal.subdomain.net`)"
       middlewares:
         - primary
       tls:
         certResolver: "cloudflare"
         domains:
-          - main: "traefik.subdomain.net"
-            sans: "*.traefik.subdomain.net"
+          - main: "internal.subdomain.net"
+            sans: "*.internal.subdomain.net"
       service: api@internal
+      
+    dockflare:
+      entryPoints:
+        - "https"
+      rule: "Host(`dockflare.internal.geniehome.net`)"
+      middlewares:
+        - primary
+      tls: {}
+      service: dockflare
       
     vaultwarden:
       entryPoints:
         - "https"
-      rule: "Host(`vault.traefik.subdomain.net`)"
+      rule: "Host(`vault.internal.subdomain.net`) || Host(`vaultwarden.subdomain.net`)"
       middlewares:
         - primary
       tls: {}
@@ -25,7 +34,7 @@ http:
     photoprism:
       entryPoints:
         - "https"
-      rule: "Host(`photoprism.traefik.subdomain.net`)"
+      rule: "Host(`photoprism.internal.subdomain.net`) || Host(`photoprism.subdomain.net`)"
       middlewares:
         - primary
       tls: {}
@@ -65,7 +74,7 @@ http:
           - X-authentik-meta-app
           - X-authentik-meta-version
 
-    geniehome-ipwhitelist:
+    ipwhitelist:
       ipAllowList:
         sourceRange:
           - "100.76.38.100"
@@ -107,4 +116,4 @@ http:
         middlewares:
         - default-headers
         - https-redirect
-      #  - geniehome-ipwhitelist
+      #  - ipwhitelist
