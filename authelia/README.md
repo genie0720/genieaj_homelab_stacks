@@ -48,7 +48,7 @@ http:
     authelia:
       entryPoints:
         - "https"
-      rule: "Host(`authelia.subdomain.domain.net`)"
+      rule: "Host(`authelia.internal.domain.net`)"
       middlewares:
         - primary
       tls: {}
@@ -64,7 +64,7 @@ services:
 middlewares:
   authelia:
     forwardAuth:
-      address: "http://authelia:9091/api/verify?rd=https://authelia.subdomain.domain.net"
+      address: "http://authelia:9091/api/verify?rd=https://authelia.internal.domain.net"
       trustForwardHeader: true
       authResponseHeaders:
         - Remote-User
