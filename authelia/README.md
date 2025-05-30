@@ -1,4 +1,4 @@
-https://www.authelia.com/integration/prologue/get-started/
+**Official Documention** - https://www.authelia.com/integration/prologue/get-started/
 
 ## Secrets
 
