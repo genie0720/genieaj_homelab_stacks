@@ -64,7 +64,7 @@ services:
 middlewares:
   authelia:
     forwardAuth:
-      address: "http://authelia:9091/api/verify?rd=https://authelia.traefik.geniehome.net"
+      address: "http://authelia:9091/api/verify?rd=https://authelia.subdomain.domain.net"
       trustForwardHeader: true
       authResponseHeaders:
         - Remote-User
