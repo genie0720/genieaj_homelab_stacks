@@ -12,11 +12,20 @@ http:
           - main: "internal.subdomain.net"
             sans: "*.internal.subdomain.net"
       service: api@internal
+
+    authelia:
+      entryPoints:
+        - "https"
+      rule: "Host(`authelia.internal.subdomain.net`)"
+      middlewares:
+        - primary
+      tls: {}
+      service: authelia
       
     dockflare:
       entryPoints:
         - "https"
-      rule: "Host(`dockflare.internal.geniehome.net`)"
+      rule: "Host(`dockflare.internal.subdomain.net`)"
       middlewares:
         - primary
       tls: {}
@@ -28,6 +37,7 @@ http:
       rule: "Host(`vault.internal.subdomain.net`) || Host(`vaultwarden.subdomain.net`)"
       middlewares:
         - primary
+       # - authelia 
       tls: {}
       service: vaultwarden
       
@@ -41,7 +51,12 @@ http:
       service: photoprism
       #--------------------------------------------services---------------------------------------#
   services:
-
+    authelia:
+      loadBalancer:
+        servers:
+          - url: "http://authelia:9091"
+        passHostHeader: true
+        
     vaultwarden:
       loadBalancer:
         servers:
@@ -56,7 +71,16 @@ http:
 
 #----------------------------------------- MIDDLEWARES ------------------------------------------------------------#
   middlewares:
-
+    authelia:
+      forwardAuth:
+        address: "http://authelia:9091/api/verify?rd=https://authelia.internal.subdomain.net"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Remote-User
+          - Remote-Groups
+          - Remote-Name
+          - Remote-Email
+          
     authentik:
       forwardAuth:
         address: "http://authentik:9000/outpost.goauthentik.io/auth/traefik"
