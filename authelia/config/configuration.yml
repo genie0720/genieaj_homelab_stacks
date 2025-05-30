@@ -5,7 +5,7 @@ log:
 theme: dark
 # This secret can also be set using the env variables AUTHELIA_JWT_SECRET_FILE
 #jwt_secret:
-default_redirection_url: https://authelia.subdomain.domain.net
+default_redirection_url: https://authelia.internal.domain.net
 totp:
   issuer: authelia.com
 
@@ -45,9 +45,9 @@ access_control:
   default_policy: deny
   rules:
     # Rules applied to everyone
-    - domain: vault.domain.subdomain.net
+    - domain: vault.internal.subdomain.net
       policy: two_factor
-    - domain: photoprism.domain.subdomain.net
+    - domain: photoprism.internal.subdomain.net
       policy: one_factor
 
 session:
