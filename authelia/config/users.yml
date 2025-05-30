@@ -1,0 +1,10 @@
+users:
+  admin: ## username
+    displayname: 'Administrator'
+    ## Generate a new hash using the instructions at:
+    ## https://www.authelia.com/reference/guides/passwords/#passwords
+    password: 'password_digest'
+    email: 'example@example.com'
+    groups:
+      - 'admin'
+      - 'dev'
