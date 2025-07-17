@@ -12,12 +12,13 @@ Add the following lines to your `configuration.nix` file:
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMyaA0FK6e56QGOlleGGVdeUHOwRV22JXw0Dd0zo5Jd"
+  "PUBLIC-KEY-FOR-USER-ROOT-MAIN-NIXOS-MACHINE"
   ];
 
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
+SSH key is the public root key from main nixOS workstation
 
 Run the command:
 
