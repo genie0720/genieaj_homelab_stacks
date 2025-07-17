@@ -1,6 +1,6 @@
 ## Enable Flakes and SSH
 
-Navigate to /etc/nixos
+ON MACHINE YOU WANT TO REMOTELY ACCESS: Navigate to /etc/nixos
 Add the following lines to your `configuration.nix` file:
 
 ```
@@ -27,7 +27,7 @@ sudo nixos-rebuild switch
 
 ## Create Directories on Main NixOS System / Update configuration.nix and flake.nix
 
-create a new directory under `hosts` called `nix-test`. Inside this folder, copy over a `configuration.nix` file and a `hardware-confiuration.nix` file.
+ON MAIN NIXOS MACHINE (NOT REMOTE) create a new directory under `hosts` called `nix-test`. Inside this folder, copy over a `configuration.nix` file and a `hardware-confiuration.nix` file.
 
 run command to push updates to remote nix machine:
 
