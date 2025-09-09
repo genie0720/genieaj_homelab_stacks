@@ -20,3 +20,4 @@
   };
 
   services = {}; # No external service needed; uses internal API
+}
