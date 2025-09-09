@@ -50,7 +50,7 @@ ssh nix@my-server-ip
 
 ## 📁 Directory Structure
 
-Once I’m in, I set up a clean directory structure for my Nix configs. I keep a top-level folder (I use `~/nixos`; use `~/nix-config` if you prefer).
+Once I’m in, I set up a clean directory structure for my Nix configs. I keep a top-level folder `~/nix-config`.
 
 I copy my `hardware-configuration.nix` and `configuration.nix` into the top-level—these are the base of the system setup.
 
@@ -59,16 +59,16 @@ Then I create a `modules` directory with a `services` subfolder to house service
 Create the structure:
 
 ```bash
-mkdir -p ~/nixos/modules/services/traefik-hosts
-touch ~/nixos/modules/services/traefik.nix
-touch ~/nixos/modules/services/jellyfin.nix
-touch ~/nixos/modules/services/traefik-hosts/jellyfin.nix
+mkdir -p ~/nix_config/modules/services/traefik-hosts
+touch ~/nix_config/modules/services/traefik.nix
+touch ~/nix_config/modules/services/jellyfin.nix
+touch ~/nix_config/modules/services/traefik-hosts/jellyfin.nix
 ```
 
 Resulting layout:
 
 ```
-~/nixos
+~/nix_config
 ├─ configuration.nix
 ├─ hardware-configuration.nix
 └─ modules
@@ -87,7 +87,7 @@ Notes:
 
 ---
 
-## 🔗 Wiring modules into configuration.nix (placeholder)
+## 🔗 Wiring modules into configuration.nix
 
 If you’re using a traditional (non-flake) setup, you can import your modules like this:
 
@@ -140,7 +140,7 @@ sudo nixos-rebuild switch
 If using flakes:
 
 ```bash
-sudo nixos-rebuild switch --flake ~/nixos#<hostname>
+sudo nixos-rebuild switch --flake .
 ```
 
 ---
