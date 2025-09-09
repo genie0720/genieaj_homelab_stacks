@@ -111,24 +111,6 @@ If you’re using flakes, reference these from `flake.nix` under your system’s
 
 ---
 
-## 🗝️ Secrets (SOPS + age) – Coming Soon
-
-Planned:
-- Integrate `sops-nix` to manage secrets (TLS certs, API keys, admin passwords) declaratively.
-- Store encrypted files in `secrets/` and decrypt on activation using your age key.
-- Recommended: generate an age key (`age-keygen -o ~/.age/key.txt`) and configure `sops.yaml` to target it.
-
----
-
-## 🚦 Next Steps
-
-- Add CoreDNS module (`modules/services/coredns.nix`) and configure zones/records for internal services.
-- Define Traefik entrypoints, middleware, and TLS (LE or local CA).
-- Populate `traefik-hosts/jellyfin.nix` with routers/services for Jellyfin.
-- Add `sops-nix` and move secrets into encrypted files.
-
----
-
 ## ✅ Rebuild Cycle
 
 After each change:
