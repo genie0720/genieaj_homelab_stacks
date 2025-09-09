@@ -390,3 +390,39 @@ Verify:
 ```bash
 sops -d traefik.env.enc
 ```
+
+---
+
+## Core DNS
+
+CoreDNS is a flexible, plugin-based DNS server written in Go.
+
+This module will be placed in the services directory.
+
+- **Zone File**: Defines `geniehome.net` with a nameserver (`ns.geniehome.net`) and wildcard `.test` resolution — all pointing to the server where you are running Traefik, in this case, the same server that we will run CoreDNS on
+- **ACLs**: Only whitelisted subnets and IPs can query `.`, everything else is blocked.
+- **Forwarding**: Non-zone queries are forwarded to `192.168.20.1`, likely your upstream resolver.
+- **Logging & Errors**: Enabled for both zones — useful for debugging and observability.
+- **Declarative Deployment**: The zone file is injected via `environment.etc`, keeping secrets and state out of the code.
+
+This module is toggleable via `config.genie.dns.enable`, making it easy to include or exclude from your NixOS system.
+
+update configuration.nix file to import the modules traefik.nix and coredns.nix.
+
+rebuild 
+`sudo nixos-rebuild switch --flake .`
+
+We can run:
+
+```
+systemctl status traefik
+systemctl status coredns
+```
+
+to make sure they are up and running.
+
+---
+
+## Jellyfin Native Service
+
+enable Jellyfin using NixOS’s built-in module. 
