@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./modules/user.nix
        ./modules/nextcloud.nix
        ./modules/authentik.nix
     ];
