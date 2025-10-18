@@ -1,5 +1,7 @@
 ## NixOS Nextcloud + Authentik Setup
 
+Youtube Walkthrough: https://youtu.be/5Uib-kX8iGc?si=MvPAiV5ghyZqrIfB
+
 NixOS setup for a self-hosted Nextcloud instance using Authentik for OAuth authentication and SOPS for secret management.
 
 Nextcloud is a powerful, self-hosted platform that lets you run your own private cloud. Think of it as your personal alternative to services like Google Drive or Dropbox—but with full control over your data. You can store files, sync calendars and contacts, stream media, and even collaborate with others—all from your own server.
